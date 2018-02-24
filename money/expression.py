@@ -1,5 +1,7 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class Expression(ABC):
-    pass
+    @abstractmethod
+    def reduce(self, to):
+        raise NotImplementedError

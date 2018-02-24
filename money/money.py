@@ -15,8 +15,12 @@ class Money(Expression):
     def currency(self):
         return self._currency
 
-    def plus(self, other):
-        return Money(self._amount + other._amount, self.currency())
+    def plus(self, addend):
+        from .sum import Sum
+        return Sum(self, addend)
+
+    def reduce(self, to):
+        return self
 
     def times(self, multiplier):
         return Money(self._amount * multiplier, self._currency)
