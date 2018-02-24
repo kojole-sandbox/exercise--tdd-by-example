@@ -9,6 +9,9 @@ class Money(Expression):
     def __eq__(self, other):
         return self._amount == other._amount and self.currency() == other.currency()
 
+    def __repr__(self):
+        return '<{} {}>'.format(self._amount, self._currency)
+
     def currency(self):
         return self._currency
 
