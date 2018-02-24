@@ -1,23 +1,22 @@
 import unittest
 
-from money.dollar import Dollar
-from money.franc import Franc
+from money.money import Money
 
 
 class TestMoney(unittest.TestCase):
     def test_multiplication(self):
-        five = Dollar(5)
-        self.assertEqual(five.times(2), Dollar(10))
-        self.assertEqual(five.times(3), Dollar(15))
+        five = Money.dollar(5)
+        self.assertEqual(five.times(2), Money.dollar(10))
+        self.assertEqual(five.times(3), Money.dollar(15))
 
     def test_equality(self):
-        self.assertEqual(Dollar(5), Dollar(5))
-        self.assertNotEqual(Dollar(5), Dollar(6))
-        self.assertEqual(Franc(5), Franc(5))
-        self.assertNotEqual(Franc(5), Franc(6))
-        self.assertNotEqual(Dollar(5), Franc(5))
+        self.assertEqual(Money.dollar(5), Money.dollar(5))
+        self.assertNotEqual(Money.dollar(5), Money.dollar(6))
+        self.assertEqual(Money.franc(5), Money.franc(5))
+        self.assertNotEqual(Money.franc(5), Money.franc(6))
+        self.assertNotEqual(Money.dollar(5), Money.franc(5))
 
     def test_franc_multiplication(self):
-        five = Franc(5)
-        self.assertEqual(five.times(2), Franc(10))
-        self.assertEqual(five.times(3), Franc(15))
+        five = Money.franc(5)
+        self.assertEqual(five.times(2), Money.franc(10))
+        self.assertEqual(five.times(3), Money.franc(15))
