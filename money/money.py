@@ -14,10 +14,8 @@ class Money:
 
     @staticmethod
     def dollar(amount):
-        from .dollar import Dollar
-        return Dollar(amount, 'USD')
+        return Money(amount, 'USD')
 
     @staticmethod
     def franc(amount):
-        from .franc import Franc
-        return Franc(amount, 'CHF')
+        return Money(amount, 'CHF')
