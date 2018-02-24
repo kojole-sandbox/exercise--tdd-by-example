@@ -9,3 +9,7 @@ class Expression(ABC):
     @abstractmethod
     def reduce(self, bank, to):
         raise NotImplementedError
+
+    @abstractmethod
+    def times(self, multiplier):
+        raise NotImplementedError
