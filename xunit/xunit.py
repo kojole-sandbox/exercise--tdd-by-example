@@ -20,8 +20,7 @@ class TestCase:
     def setup(self):
         pass
 
-    def run(self):
-        result = TestResult()
+    def run(self, result):
         result.test_started()
         self.setup()
         try:
@@ -30,10 +29,21 @@ class TestCase:
         except:
             result.test_failed()
         self.teardown()
-        return result
 
     def teardown(self):
         pass
+
+
+class TestSuite:
+    def __init__(self):
+        self.tests = []
+
+    def add(self, test):
+        self.tests.append(test)
+
+    def run(self, result):
+        for test in self.tests:
+            test.run(result)
 
 
 class WasRun(TestCase):
@@ -51,33 +61,47 @@ class WasRun(TestCase):
 
 
 class TestCaseTest(TestCase):
+    def setup(self):
+        self.result = TestResult()
+
     def test_template_method(self):
         test = WasRun('test_method')
-        test.run()
+        test.run(self.result)
         assert(test.log == "setup test_method teardown ")
 
     def test_result(self):
         test = WasRun('test_method')
-        result = test.run()
-        assert(result.summary() == '1 run, 0 failed')
+        test.run(self.result)
+        assert(self.result.summary() == '1 run, 0 failed')
 
     def test_failed_result(self):
         test = WasRun('test_broken_method')
-        result = test.run()
-        assert(result.summary() == '1 run, 1 failed')
+        test.run(self.result)
+        assert(self.result.summary() == '1 run, 1 failed')
 
     def test_failed_result_formatting(self):
-        result = TestResult()
-        result.test_started()
-        result.test_failed()
-        assert(result.summary() == '1 run, 1 failed')
+        self.result.test_started()
+        self.result.test_failed()
+        assert(self.result.summary() == '1 run, 1 failed')
+
+    def test_suite(self):
+        suite = TestSuite()
+        suite.add(WasRun('test_method'))
+        suite.add(WasRun('test_broken_method'))
+        suite.run(self.result)
+        assert(self.result.summary() == '2 run, 1 failed')
 
 
 def main():
-    print(TestCaseTest('test_template_method').run().summary())
-    print(TestCaseTest('test_result').run().summary())
-    print(TestCaseTest('test_failed_result').run().summary())
-    print(TestCaseTest('test_failed_result_formatting').run().summary())
+    suite = TestSuite()
+    suite.add(TestCaseTest('test_template_method'))
+    suite.add(TestCaseTest('test_result'))
+    suite.add(TestCaseTest('test_failed_result'))
+    suite.add(TestCaseTest('test_failed_result_formatting'))
+    suite.add(TestCaseTest('test_suite'))
+    result = TestResult()
+    suite.run(result)
+    print(result.summary())
 
 
 if __name__ == '__main__':
