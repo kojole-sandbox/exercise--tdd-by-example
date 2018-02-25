@@ -9,33 +9,32 @@ class TestCase:
         self.setup()
         method = getattr(self, self.name)
         method()
+        self.teardown()
+
+    def teardown(self):
+        pass
 
 
 class WasRun(TestCase):
     def setup(self):
-        self.was_run = None
-        self.was_setup = 1
+        self.log = "setup "
+
+    def teardown(self):
+        self.log += "teardown "
 
     def test_method(self):
-        self.was_run = 1
+        self.log += "test_method "
 
 
 class TestCaseTest(TestCase):
-    def setup(self):
-        self.test = WasRun('test_method')
-
-    def test_running(self):
-        self.test.run()
-        assert(self.test.was_run)
-
-    def test_setup(self):
-        self.test.run()
-        assert(self.test.was_setup)
+    def test_template_method(self):
+        test = WasRun('test_method')
+        test.run()
+        assert(test.log == "setup test_method teardown ")
 
 
 def main():
-    TestCaseTest('test_running').run()
-    TestCaseTest('test_setup').run()
+    TestCaseTest('test_template_method').run()
 
 
 if __name__ == '__main__':
